@@ -123,7 +123,7 @@ def checkAvailable(listDate, inputBool):
 root = tk.Tk()
 
 v = tk.IntVar()
-v.set(10)  # initializing the choice, i.e. Python
+v.set(10)  # initializing the choice, Winter Park
 
 languages = [("Alta Snowbird", 0),("Arapahoe Basin", 1),("Big Sky", 2),("Brighton", 3),("Copper Mountain", 4),("Deer Valley", 5),("Eldora", 6),("Solitude", 7),("Steamboat", 8),("Taos", 9),("Winter Park", 10),("Big Bear", 11),("June Mountain", 11),("Mammoth", 13),("Squaw Valley", 14),("Boyne Highlands", 15),("Boyne Mountain", 16),("Crystal Mountain", 17),("Mt. Bachelor", 18),("Summit at Snoqualmie", 19),("Killington", 20),("Loon Mountain",21),("Snowshoe",22),("Stratton",23),("Sugarbush",24),("Sugarloaf",25),("Sunday River",26),("Windham Mountain",27),("Blue Mountain",28),("Tremblant",29),("Cypress Mountain",30),("Red Mountain",31),("Revelstoke",32),("Ski Big 3",33),("Coronet Peak",34),("Mt. Butler",35),("Thredbo",36),("Niseko United",37),("Valle Nevado",38),("Zermatt",39)]
 
@@ -131,7 +131,7 @@ languages = [("Alta Snowbird", 0),("Arapahoe Basin", 1),("Big Sky", 2),("Brighto
 def submit():
     root.destroy()
 
-
+root.title("Ikon Pass Destinations")
 tk.Label(root, text="Choose the desired destination",justify = 'center',).grid(column=1, row=0, columnspan=2)
 
 for i, langVal in enumerate(languages):
