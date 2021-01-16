@@ -46,7 +46,7 @@ def dateInput():
     return [numToMonth[dateMonth], dateDay]
 
 
-def fromReserve(listDate, inputBool, section, item):
+def fromReserveIkon(listDate, inputBool, section, item):
     stringMonth = listDate[0]
     day = listDate[1]
     driver.execute_script("window.scrollTo(0, 200)")
@@ -68,7 +68,7 @@ def fromReserve(listDate, inputBool, section, item):
     while findMonth:
         pageMonth = elem.text[:len(stringMonth)]
         if pageMonth.strip() == stringMonth.strip():
-            returnVal = checkAvailable(listDate, inputBool)
+            returnVal = checkAvailableIkon(listDate, inputBool)
             findMonth = False
         else:
             button = driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-pRrxg.OYQvJ > div.sc-pZOOJ.iFmuIW > div.sc-pZpxQ.kynict > div:nth-child(1) > div.DayPicker.sc-pIVsU.fBycfn > div > div.sc-pcHDm.cSajLG > div.sc-ptCms.fzKffT > button:nth-child(3)")
@@ -76,7 +76,7 @@ def fromReserve(listDate, inputBool, section, item):
     return returnVal
 
 
-def checkAvailable(listDate, inputBool):
+def checkAvailableIkon(listDate, inputBool):
     day = listDate[1]
     available = True
     elems = driver.find_elements_by_class_name("DayPicker-Day")
@@ -88,7 +88,7 @@ def checkAvailable(listDate, inputBool):
                 loop = input("Chosen day is unavailable, would you like to continue checking until it becomes available? (y/n): ")
             if loop.lower() == 'y' or loop.lower() == "yes":
                 driver.refresh()
-                fromReserve(listDate, False)
+                fromReserveIkon(listDate, False)
                 time.sleep(5)
             else:
                 print("Goodbye")
@@ -120,46 +120,51 @@ def checkAvailable(listDate, inputBool):
             print("Successfully booked!")
             return 1
 
+def centerWindow(root):
+    root.attributes('-alpha', 0)
+    root.update()
+
+    # Gets the requested values of the height and width.
+    windowWidth = root.winfo_reqwidth()
+    windowHeight = root.winfo_reqheight()
+
+    # Gets both half the screen width/height and window width/height
+    positionRight = int(root.winfo_screenwidth() / 2 - windowWidth / 2)
+    positionDown = int(root.winfo_screenheight() / 2 - windowHeight / 2)
+
+    # Positions the window in the center of the page.
+    root.geometry("+{}+{}".format(positionRight, positionDown))
+
+    root.attributes('-alpha', 1)
+    root.mainloop()
+
+
 root = tk.Tk()
 
 v = tk.IntVar()
 v.set(10)  # initializing the choice, Winter Park
 
-languages = [("Alta Snowbird", 0),("Arapahoe Basin", 1),("Big Sky", 2),("Brighton", 3),("Copper Mountain", 4),("Deer Valley", 5),("Eldora", 6),("Solitude", 7),("Steamboat", 8),("Taos", 9),("Winter Park", 10),("Big Bear", 11),("June Mountain", 11),("Mammoth", 13),("Squaw Valley", 14),("Boyne Highlands", 15),("Boyne Mountain", 16),("Crystal Mountain", 17),("Mt. Bachelor", 18),("Summit at Snoqualmie", 19),("Killington", 20),("Loon Mountain",21),("Snowshoe",22),("Stratton",23),("Sugarbush",24),("Sugarloaf",25),("Sunday River",26),("Windham Mountain",27),("Blue Mountain",28),("Tremblant",29),("Cypress Mountain",30),("Red Mountain",31),("Revelstoke",32),("Ski Big 3",33),("Coronet Peak",34),("Mt. Butler",35),("Thredbo",36),("Niseko United",37),("Valle Nevado",38),("Zermatt",39)]
+resorts = [("Alta Snowbird", 0),("Arapahoe Basin", 1),("Big Sky", 2),("Brighton", 3),("Copper Mountain", 4),("Deer Valley", 5),("Eldora", 6),("Solitude", 7),("Steamboat", 8),("Taos", 9),("Winter Park", 10),("Big Bear", 11),("June Mountain", 11),("Mammoth", 13),("Squaw Valley", 14),("Boyne Highlands", 15),("Boyne Mountain", 16),("Crystal Mountain", 17),("Mt. Bachelor", 18),("Summit at Snoqualmie", 19),("Killington", 20),("Loon Mountain",21),("Snowshoe",22),("Stratton",23),("Sugarbush",24),("Sugarloaf",25),("Sunday River",26),("Windham Mountain",27),("Blue Mountain",28),("Tremblant",29),("Cypress Mountain",30),("Red Mountain",31),("Revelstoke",32),("Ski Big 3",33),("Coronet Peak",34),("Mt. Butler",35),("Thredbo",36),("Niseko United",37),("Valle Nevado",38),("Zermatt",39)]
 
 
 def submit():
     root.destroy()
+    time.sleep(1)
 
 root.title("Ikon Pass Destinations")
 tk.Label(root, text="Choose the desired destination",justify = 'center',).grid(column=1, row=0, columnspan=2)
 
-for i, langVal in enumerate(languages):
+for i, resortVal in enumerate(resorts):
     if i > 19:
         col = 2
         rowNum = i-19
     else:
         col = 1
         rowNum = i+1
-    tk.Radiobutton(root, text=langVal[0], padx = 20, variable=v, value=langVal[1]).grid(column=col, row=rowNum, sticky="W")
+    tk.Radiobutton(root, text=resortVal[0], padx = 20, variable=v, value=resortVal[1]).grid(column=col, row=rowNum, sticky="W")
 tk.Button(text="Submit", command=submit).grid(column=1, row=21, columnspan=2)
 
-root.attributes('-alpha',0)
-root.update()
-
-# Gets the requested values of the height and width.
-windowWidth = root.winfo_reqwidth()
-windowHeight = root.winfo_reqheight()
-
-# Gets both half the screen width/height and window width/height
-positionRight = int(root.winfo_screenwidth() / 2 - windowWidth / 2)
-positionDown = int(root.winfo_screenheight() / 2 - windowHeight / 2)
-
-# Positions the window in the center of the page.
-root.geometry("+{}+{}".format(positionRight, positionDown))
-
-root.attributes('-alpha',1)
-root.mainloop()
+centerWindow(root)
 
 location = int(v.get())
 
@@ -209,6 +214,33 @@ while driver.current_url != "https://account.ikonpass.com/en/myaccount":
 
 driver.get("https://account.ikonpass.com/en/myaccount/add-reservations/")
 
-fromReserve(dateInput(), True, section, item)
+driver.execute_script("window.scrollTo(0, 200)")
+elems = driver.find_elements_by_class_name("react-autosuggest__section-title")
+for x in elems:
+    if x.text.strip().lower() == "my favorites":
+        section += 1
+button = driver.find_element_by_css_selector("#react-autowhatever-resort-picker-section-" + str(section) + "-item-" + str(item) + " > span > span")
+button.click()
+time.sleep(2)
+
+#variable shows which website the booking needs to be made on
+#0: ikonpass website
+#1: parking reservations on resort website
+#2: no booking required
+
+bookingType = -1
+
+
+if driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-pRrxg.OYQvJ > div.sc-pZOOJ.iFmuIW > div.sc-pIuOK.kfwIKW > button"):
+    bookingType = 0
+elif driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-pRrxg.OYQvJ > div.sc-pZOOJ.iFmuIW > div.sc-pZpxQ.kynict > div:nth-child(2) > div > a"):
+    bookingType = 1
+else:
+    bookingType = 2
+
+#if bookingType == 1 or bookingType == 0:
+    #do something
+
+fromReserveIkon(dateInput(), True, section, item)
 
 driver.close()
