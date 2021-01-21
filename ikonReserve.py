@@ -1,62 +1,24 @@
 import tkinter as tk
+from tkinter import ttk
 from selenium import webdriver
 import time
+from tkcalendar import *
+from datetime import date
 
 months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"]
-monthsNum = list(range(1, 13))
+monthsNum = ["01","02","03","04","05","06","07","08","09","10","11","12"]
 numToMonth = dict(zip(monthsNum, months))
 
-
-def dateInput():
-    validate = True
-    while validate:
-        rawInput = input("Enter the desired month (1-6): ")
-        if rawInput.isdigit():
-            dateMonth = int(rawInput)
-        if not rawInput.isdigit():
-            print("Please enter a number")
-        elif (dateMonth <= 6) and (dateMonth >= 1):
-            validate = False
-        else:
-            print("Please enter a valid month")
-
-    validate = True
-    while validate:
-        rawInput = input("Enter the desired day: ")
-        if rawInput.isdigit():
-            dateDay = int(rawInput)
-        if not rawInput.isdigit():
-            print("Please enter a number")
-        elif dateMonth in [1, 3, 5, 7, 8, 10, 12]:
-            if (dateDay <= 31) and (dateDay >= 1):
-                validate = False
-            else:
-                print("Enter a valid day (1-31)")
-        elif dateMonth in [4, 6, 9, 11]:
-            if (dateDay <= 30) and (dateDay >= 1):
-                validate = False
-            else:
-                print("Enter a valid day (1-30)")
-        elif dateMonth == 2:
-            if (dateDay <= 28) and (dateDay >= 1):
-                validate = False
-            else:
-                print("Enter a valid day (1-28)")
-
-    return [numToMonth[dateMonth], dateDay]
-
-
-def fromReserveIkon(listDate, inputBool, section, item):
-    stringMonth = listDate[0]
-    day = listDate[1]
+def fromReloadIkon(listDate, section, item):
     driver.execute_script("window.scrollTo(0, 200)")
-    elems = driver.find_elements_by_class_name("react-autosuggest__section-title")
-    for x in elems:
-        if x.text.strip().lower() == "my favorites":
-            section += 1
-    button = driver.find_element_by_css_selector("#react-autowhatever-resort-picker-section-" + str(section) + "-item-" + str(item) + " > span > span")
+    time.sleep(1)
+    button = driver.find_element_by_css_selector("#react-autowhatever-resort-picker-section-" + str(section) + "-item-" + str(item))
     button.click()
     time.sleep(2)
+    fromResortIkon(listDate, section)
+
+def fromResortIkon(listDate, section):
+    stringMonth = numToMonth[listDate[0]]
     button = driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-pRrxg.OYQvJ > div.sc-pZOOJ.iFmuIW > div.sc-pIuOK.kfwIKW > button")
     button.click()
     time.sleep(2)
@@ -68,7 +30,7 @@ def fromReserveIkon(listDate, inputBool, section, item):
     while findMonth:
         pageMonth = elem.text[:len(stringMonth)]
         if pageMonth.strip() == stringMonth.strip():
-            returnVal = checkAvailableIkon(listDate, inputBool)
+            returnVal = checkAvailableIkon(listDate, section)
             findMonth = False
         else:
             button = driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-pRrxg.OYQvJ > div.sc-pZOOJ.iFmuIW > div.sc-pZpxQ.kynict > div:nth-child(1) > div.DayPicker.sc-pIVsU.fBycfn > div > div.sc-pcHDm.cSajLG > div.sc-ptCms.fzKffT > button:nth-child(3)")
@@ -76,23 +38,16 @@ def fromReserveIkon(listDate, inputBool, section, item):
     return returnVal
 
 
-def checkAvailableIkon(listDate, inputBool):
+def checkAvailableIkon(listDate, section):
     day = listDate[1]
     available = True
     elems = driver.find_elements_by_class_name("DayPicker-Day")
     unavilableElems = driver.find_elements_by_class_name("DayPicker-Day--unavailable")
     for x in unavilableElems:
         if str(day) == x.text.strip():
-            loop = 'y'
-            if inputBool:
-                loop = input("Chosen day is unavailable, would you like to continue checking until it becomes available? (y/n): ")
-            if loop.lower() == 'y' or loop.lower() == "yes":
-                driver.refresh()
-                fromReserveIkon(listDate, False)
-                time.sleep(5)
-            else:
-                print("Goodbye")
-                return
+            driver.refresh()
+            fromReloadIkon(listDate, section, item)
+            time.sleep(5)
             available = False
     if available:
         for x in elems:
@@ -139,20 +94,25 @@ def centerWindow(root):
     root.mainloop()
 
 
+resorts = [("Alta Snowbird", 0),("Arapahoe Basin", 1),("Big Sky", 2),("Brighton", 3),("Copper Mountain", 4),("Deer Valley", 5),("Eldora", 6),("Solitude", 7),("Steamboat", 8),("Taos", 9),("Winter Park", 10),("Big Bear", 11),("June Mountain", 12),("Mammoth", 13),("Squaw Valley", 14),("Boyne Highlands", 15),("Boyne Mountain", 16),("Crystal Mountain", 17),("Mt. Bachelor", 18),("Summit at Snoqualmie", 19),("Killington", 20),("Loon Mountain",21),("Snowshoe",22),("Stratton",23),("Sugarbush",24),("Sugarloaf",25),("Sunday River",26),("Windham Mountain",27),("Blue Mountain",28),("Tremblant",29),("Cypress Mountain",30),("Red Mountain",31),("Revelstoke",32),("Ski Big 3",33),("Coronet Peak",34),("Mt. Butler",35),("Thredbo",36),("Niseko United",37),("Valle Nevado",38),("Zermatt",39)]
+ikonReserveList = ["Arapahoe Basin", "Big Sky", "Brighton", "Taos", "Winter Park", "Crystal Mountain", "Loon Mountain", "Summit at Snoqualmie", "Windham Mountain"]
+
+def submit():
+    root.quit()
+    time.sleep(1)
+
+today = date.today()
 root = tk.Tk()
+
+style = ttk.Style(root)
+style.theme_use('default')
 
 v = tk.IntVar()
 v.set(10)  # initializing the choice, Winter Park
-
-resorts = [("Alta Snowbird", 0),("Arapahoe Basin", 1),("Big Sky", 2),("Brighton", 3),("Copper Mountain", 4),("Deer Valley", 5),("Eldora", 6),("Solitude", 7),("Steamboat", 8),("Taos", 9),("Winter Park", 10),("Big Bear", 11),("June Mountain", 11),("Mammoth", 13),("Squaw Valley", 14),("Boyne Highlands", 15),("Boyne Mountain", 16),("Crystal Mountain", 17),("Mt. Bachelor", 18),("Summit at Snoqualmie", 19),("Killington", 20),("Loon Mountain",21),("Snowshoe",22),("Stratton",23),("Sugarbush",24),("Sugarloaf",25),("Sunday River",26),("Windham Mountain",27),("Blue Mountain",28),("Tremblant",29),("Cypress Mountain",30),("Red Mountain",31),("Revelstoke",32),("Ski Big 3",33),("Coronet Peak",34),("Mt. Butler",35),("Thredbo",36),("Niseko United",37),("Valle Nevado",38),("Zermatt",39)]
-
-
-def submit():
-    root.destroy()
-    time.sleep(1)
-
+cal = Calendar(root, font="Arial 14", selectmode='day', year=today.year, month=today.month, day=today.day, width=100, mindate=today, maxdate=date(2021,6,6))
+cal.grid(column=1, row=21, columnspan=2)
 root.title("Ikon Pass Destinations")
-tk.Label(root, text="Choose the desired destination",justify = 'center',).grid(column=1, row=0, columnspan=2)
+tk.Label(root, text="Choose the desired destination",justify='center').grid(column=1, row=0, columnspan=2)
 
 for i, resortVal in enumerate(resorts):
     if i > 19:
@@ -161,12 +121,17 @@ for i, resortVal in enumerate(resorts):
     else:
         col = 1
         rowNum = i+1
-    tk.Radiobutton(root, text=resortVal[0], padx = 20, variable=v, value=resortVal[1]).grid(column=col, row=rowNum, sticky="W")
-tk.Button(text="Submit", command=submit).grid(column=1, row=21, columnspan=2)
+    if resortVal[0] in ikonReserveList:
+        tk.Radiobutton(root, text=resortVal[0], padx = 20, variable=v, value=resortVal[1]).grid(column=col, row=rowNum, sticky="W")
+    else:
+        tk.Radiobutton(root, text=resortVal[0], padx=20, variable=v, value=resortVal[1], state="disabled").grid(column=col, row=rowNum,sticky="W")
+
+tk.Button(root, text="Submit", command=submit).grid(column=1, row=22, columnspan=2)
 
 centerWindow(root)
-
 location = int(v.get())
+date = cal.selection_get()
+print(date)
 
 if location <= 10:
     section = 0
@@ -204,6 +169,9 @@ elif location == 38:
 elif location == 29:
     section = 11
     item = 0
+else:
+    section = 0
+    item = 0
 
 driver = webdriver.Chrome()
 driver.get("https://account.ikonpass.com/en/myaccount/add-reservations/")
@@ -219,7 +187,7 @@ elems = driver.find_elements_by_class_name("react-autosuggest__section-title")
 for x in elems:
     if x.text.strip().lower() == "my favorites":
         section += 1
-button = driver.find_element_by_css_selector("#react-autowhatever-resort-picker-section-" + str(section) + "-item-" + str(item) + " > span > span")
+button = driver.find_element_by_css_selector("#react-autowhatever-resort-picker-section-" + str(section) + "-item-" + str(item))
 button.click()
 time.sleep(2)
 
@@ -238,9 +206,15 @@ elif driver.find_element_by_css_selector("#root > div > div > main > section.sc-
 else:
     bookingType = 2
 
+print(bookingType)
+
 #if bookingType == 1 or bookingType == 0:
     #do something
 
-fromReserveIkon(dateInput(), True, section, item)
+listDate = str(date).split("-")
+listDate = listDate[1:]
+print(listDate)
+
+fromResortIkon(listDate, section)
 
 driver.close()
