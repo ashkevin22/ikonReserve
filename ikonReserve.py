@@ -131,7 +131,6 @@ tk.Button(root, text="Submit", command=submit).grid(column=1, row=22, columnspan
 centerWindow(root)
 location = int(v.get())
 date = cal.selection_get()
-print(date)
 
 if location <= 10:
     section = 0
@@ -176,7 +175,6 @@ else:
 driver = webdriver.Chrome()
 driver.get("https://account.ikonpass.com/en/myaccount/add-reservations/")
 time.sleep(2)
-print(driver.current_url)
 while driver.current_url != "https://account.ikonpass.com/en/myaccount":
     continue
 
@@ -206,14 +204,11 @@ elif driver.find_element_by_css_selector("#root > div > div > main > section.sc-
 else:
     bookingType = 2
 
-print(bookingType)
-
 #if bookingType == 1 or bookingType == 0:
     #do something
 
 listDate = str(date).split("-")
 listDate = listDate[1:]
-print(listDate)
 
 fromResortIkon(listDate, section)
 
