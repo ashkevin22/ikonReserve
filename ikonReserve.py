@@ -19,10 +19,11 @@ def fromReloadIkon(listDate, section, item):
 
 def fromResortIkon(listDate, section):
     stringMonth = numToMonth[listDate[0]]
-    button = driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-pRrxg.OYQvJ > div.sc-pZOOJ.iFmuIW > div.sc-pIuOK.kfwIKW > button")
+    button = driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-qYFre.hyLEUz > div.sc-pBwqG.hsfcA-d > div.sc-pIuOK.kfwIKW > button")
     button.click()
     time.sleep(2)
-    elem = driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-pRrxg.OYQvJ > div.sc-pZOOJ.iFmuIW > div.sc-pZpxQ.kynict > div:nth-child(1) > div.DayPicker.sc-pIVsU.fBycfn > div > div.sc-pcHDm.cSajLG > div.sc-ptCms.fzKffT > span")
+    elem = driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-qYFre.hyLEUz > div.sc-pBwqG.hsfcA-d > div.sc-pZpxQ.kynict > div:nth-child(1) > div.DayPicker.sc-pIVsU.fBycfn > div > div.sc-pcHDm.cSajLG > div.sc-ptCms.fzKffT > span")
+
 
     returnVal = 0
 
@@ -33,7 +34,7 @@ def fromResortIkon(listDate, section):
             returnVal = checkAvailableIkon(listDate, section)
             findMonth = False
         else:
-            button = driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-pRrxg.OYQvJ > div.sc-pZOOJ.iFmuIW > div.sc-pZpxQ.kynict > div:nth-child(1) > div.DayPicker.sc-pIVsU.fBycfn > div > div.sc-pcHDm.cSajLG > div.sc-ptCms.fzKffT > button:nth-child(3)")
+            button = driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-qYFre.hyLEUz > div.sc-pBwqG.hsfcA-d > div.sc-pZpxQ.kynict > div:nth-child(1) > div.DayPicker.sc-pIVsU.fBycfn > div > div.sc-pcHDm.cSajLG > div.sc-ptCms.fzKffT > button:nth-child(3)")
             button.click()
     return returnVal
 
@@ -53,8 +54,8 @@ def checkAvailableIkon(listDate, section):
         for x in elems:
             if str(day) == x.text.strip():
                 x.click()
-        reservationsLeft = driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-pRrxg.OYQvJ > div.sc-pZOOJ.iFmuIW > div.sc-pZpxQ.kynict > div:nth-child(2) > div > div.sc-oVfmS.fqKNoT > label > div.sc-pdihw.bqUhYY > div.sc-pCOsa.qskIT")
-        numReservations = ""
+                reservationsLeft = driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-qYFre.hyLEUz > div.sc-pBwqG.hsfcA-d > div.sc-pZpxQ.kynict > div:nth-child(2) > div > div.sc-oVfmS.fqKNoT > label > div.sc-pdihw.bqUhYY > div.sc-pCOsa.qskIT")
+                numReservations = ""
         for c in reservationsLeft.text:
             if c.isdigit():
                 numReservations += c
@@ -62,15 +63,15 @@ def checkAvailableIkon(listDate, section):
             print("Could not book reservation. You have 0 remaining reservations.")
             return
         else:
-            button = driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-pRrxg.OYQvJ > div.sc-pZOOJ.iFmuIW > div.sc-pZpxQ.kynict > div:nth-child(2) > div > div.sc-pZAOG.eUgRHN > button.sc-AxjAm.jxPclZ.sc-qcpLw.jSQblL")
+            button = driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-qYFre.hyLEUz > div.sc-pBwqG.hsfcA-d > div.sc-pZpxQ.kynict > div:nth-child(2) > div > div.sc-pAKSZ.dHRKUJ > button.sc-AxjAm.jxPclZ.sc-pDabv.cXRBvv")
             button.click()
             time.sleep(1)
-            button = driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-pRrxg.OYQvJ > div.sc-pZOOJ.iFmuIW > div.sc-oTAMn.eTrOuH > button")
+            button = driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-qYFre.hyLEUz > div.sc-pBwqG.hsfcA-d > div.sc-pJgJK.dNdgLq > button")
             button.click()
             time.sleep(2)
-            button = driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-pRrxg.OYQvJ > div.sc-pZOOJ.iFmuIW > div > div.sc-pYZcj.ffynVg > label > input")
+            button = driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-qYFre.hyLEUz > div.sc-pBwqG.hsfcA-d > div > div.sc-pYZcj.ffynVg > label > input")
             button.click()
-            button = driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-pRrxg.OYQvJ > div.sc-pZOOJ.iFmuIW > div > div.sc-pJTpM.ieaJIt > button")
+            button = driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-qYFre.hyLEUz > div.sc-pBwqG.hsfcA-d > div > div.sc-pJTpM.ieaJIt > button")
             button.click()
             print("Successfully booked!")
             return 1
@@ -98,7 +99,7 @@ resorts = [("Alta Snowbird", 0),("Arapahoe Basin", 1),("Big Sky", 2),("Brighton"
 ikonReserveList = ["Arapahoe Basin", "Big Sky", "Brighton", "Taos", "Winter Park", "Crystal Mountain", "Loon Mountain", "Summit at Snoqualmie", "Windham Mountain"]
 
 def submit():
-    root.quit()
+    root.destroy()
     time.sleep(1)
 
 today = date.today()
@@ -197,7 +198,7 @@ time.sleep(2)
 bookingType = -1
 
 
-if driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-pRrxg.OYQvJ > div.sc-pZOOJ.iFmuIW > div.sc-pIuOK.kfwIKW > button"):
+if driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-qYFre.hyLEUz > div.sc-pBwqG.hsfcA-d > div.sc-pIuOK.kfwIKW > button"):
     bookingType = 0
 elif driver.find_element_by_css_selector("#root > div > div > main > section.sc-pBolk.bLdbNO > div > div.amp-card.sc-pRrxg.OYQvJ > div.sc-pZOOJ.iFmuIW > div.sc-pZpxQ.kynict > div:nth-child(2) > div > a"):
     bookingType = 1
@@ -209,6 +210,8 @@ else:
 
 listDate = str(date).split("-")
 listDate = listDate[1:]
+if int(listDate[1]) < 10:
+    listDate[1] = str(int(listDate[1])%10)
 
 fromResortIkon(listDate, section)
 
